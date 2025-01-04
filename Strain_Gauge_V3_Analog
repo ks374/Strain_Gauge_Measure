@@ -1,0 +1,114 @@
+/*
+Name: Let monkey sit still
+Author: Chenghang Zhang
+Date: 1/4/2025
+Exp: Get strain gauge measurement in an array to calculate running average. When a motion is detected (current measurement > Sensitivity),
+reward won't be given for the current session. 
+Running average sampling rate and motion detection sampling will be similar
+Note that one measurement loop takes 20ms, rewrad taks reward_time*10ms (default 100ms). Motion during this time won't be considered regardless of interval_time. 
+*/
+
+#define DIN A0
+#define DOUT 2
+
+//sampling parameter: 
+const int interval_time = 500; //There is no actual idel interval time in this experiment. 
+const int array_size = 20; //Define the size of running average array. Longer array means more sampling during the interval time. 
+const int sampling_rate = interval_time / array_size;//After a reward, strain gauge voltages will be read during the interval at the sampleing rate determined by "array_size". 
+
+//Motion detection parametner
+const float Sensitivity = 0.005; //Lower value for higher sensitivigty. 
+const int reward_repeat_time = 10; //Get more reward if needed. 
+
+int reward_flag = 1;
+float cur_voltage;
+float running_measure[array_size];
+int running_measure_pointer = 1;
+float running_ave = 0;
+
+void setup() {
+  //alogReference(INTERNAL);
+  Serial.begin(9600);  // Start the serial communication at 9600 baud rate
+  pinMode(DIN, INPUT); //set A0 as input pin
+  pinMode(DOUT, OUTPUT); 
+
+  for (int i=0;i<array_size;i++){
+    //Running average init. 
+    insert_running_average();
+  }
+  Serial.println("Init done! ");
+}
+
+void loop() {
+  //give_reward(10);
+  insert_running_average(); //update the array and cur_voltage. 
+  update_running_ave(); //update running_ave. 
+  for (int i = 1;i<=(int)sampling_rate;i++){
+    if (abs(running_ave - cur_voltage) >= Sensitivity){
+    Serial.println("Motion detected! ");
+    reward_flag = 0;
+    }
+    Serial.print("cur_voltage:");
+    Serial.println(cur_voltage);
+    Serial.print("running_average_voltage:");
+    Serial.println(running_ave);
+  }
+  if (reward_flag == 1){
+    give_reward(reward_repeat_time);
+  } else {
+    give_reward(0);
+  }
+  reward_flag = 0;
+
+  Serial.println("---------Session END----------");
+  //digitalWrite(2, LOW);
+}
+
+//--------------------------------------------------------------------------------------------------------------
+//Utility functions: 
+float get_strain_voltage() {
+  int a1=0; 
+  for (int i = 1; i <= 10; i++) {
+    a1 += analogRead(A0); delay (2);
+  }
+  int analogValue = a1/10;
+  //int analogValue = analogRead(A0);
+  
+  float voltage = analogValue * (4.8 / 1023.0);  // Convert to voltage (assuming 5V reference)
+  return voltage;
+}
+
+float set_zero() {
+  int a0 = 0;
+  for (int i = 1; i <= 20; i++) {
+    a0 += analogRead(A0); delay (20);
+  }
+  return a0/20*(5.0/1023.0);
+}
+
+void give_reward(int repeat_time){
+  //0 means no reward
+  for (int i=1;i<=repeat_time;i++){
+    digitalWrite(2, HIGH);
+    delay(10);
+    digitalWrite(2, LOW);
+    delay(10);
+  }
+}
+
+void insert_running_average(){
+  //return current measurement of the voltage
+  cur_voltage = get_strain_voltage();
+  running_measure[running_measure_pointer] = cur_voltage;
+  running_measure_pointer += 1;
+  if (running_measure_pointer >= array_size){
+    running_measure_pointer = 0;
+  }
+}
+void update_running_ave(){
+  float sum = 0;
+  for (int i=0;i<array_size;i++){
+    sum += running_measure[i];
+  }
+  running_ave = sum/array_size;
+}
