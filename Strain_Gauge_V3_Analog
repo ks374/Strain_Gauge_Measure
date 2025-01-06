@@ -48,10 +48,12 @@ void loop() {
     Serial.println("Motion detected! ");
     reward_flag = 0;
     }
-    Serial.print("cur_voltage:");
-    Serial.println(cur_voltage);
-    Serial.print("running_average_voltage:");
-    Serial.println(running_ave);
+    insert_running_average(); 
+    update_running_ave();
+    //Serial.print("cur_voltage:");
+    //Serial.println(cur_voltage);
+    //Serial.print("running_average_voltage:");
+    //Serial.println(running_ave);
   }
   if (reward_flag == 1){
     give_reward(reward_repeat_time);
