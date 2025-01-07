@@ -1,0 +1,57 @@
+'''
+Name: Let monkey sit still: python console
+Author: Chenghang Zhang
+Date: 1/7/2025
+Exp: Get Serial.print output from Arduino (StrainGauge_V3_Analog.ino). 
+'''
+
+
+import serial
+import time
+
+# Set up the serial port
+serial_port = 'COM7'  # Update with your serial port (e.g., COM3 for Windows)
+baud_rate = 9600             # Match this with the Arduino's baud rate
+Upper_task_limit = 10000
+output_file = 'arduino_output.txt'
+
+total_session_num = 0
+total_sit_fail_num = 0
+success_rate = 0
+
+try:
+    # Open the serial connection
+    with open(output_file, 'a') as file:
+        file.write(f"Experiment start. \n")
+    with serial.Serial(serial_port, baud_rate, timeout=10) as ser:
+        print(f"Listening on {serial_port} at {baud_rate} baud.")
+        
+        # Open the file for recording
+        for i in range(Upper_task_limit):
+            # Read a line from the serial port
+            if ser.in_waiting > 0:
+                line = ser.readline().decode('utf-8').strip()
+                print(f"Received: {line}\n")
+                line = line.split('-')
+                line = line[0]
+                if line == 1:
+                    total_sit_fail_num += 1
+                elif line == 2:
+                    total_session_num += 1
+                success_rate = (total_session_num-total_sit_fail_num)/total_session_num
+                print(f"Current sitting still: {total_session_num-total_sit_fail_num} / {total_session_num}, success rate: {success_rate}\n")
+except serial.SerialException as e:
+    print(f"Error: {e}\n")
+    with open(output_file, 'a') as file:
+        file.write(f"Sitting still: {total_session_num-total_sit_fail_num} / {total_session_num}, success rate: {success_rate}\n")
+        file.write(f"Experiment incomplete, Error: {e}\n")
+except KeyboardInterrupt:
+    print("Stopped by user.")
+    with open(output_file, 'a') as file:
+        file.write(f"Sitting still: {total_session_num-total_sit_fail_num} / {total_session_num}, success rate: {success_rate}\n")
+        file.write(f"Experiment incomplete, User interruped\n")
+finally:
+    print(f"Output saved to {output_file}.")
+    with open(output_file, 'a') as file:
+        file.write(f"Sitting still: {total_session_num-total_sit_fail_num} / {total_session_num}, success rate: {success_rate}\n")
+        file.write(f"Experiment end. \n")
