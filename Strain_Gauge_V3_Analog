@@ -12,13 +12,14 @@ Note that one measurement loop takes 20ms, rewrad taks reward_time*10ms (default
 #define DOUT 2
 
 //sampling parameter: 
-const int interval_time = 500; //There is no actual idel interval time in this experiment. 
+const int interval_time = 1000; //There is no actual idel interval time in this experiment. 
 const int array_size = 20; //Define the size of running average array. Longer array means more sampling during the interval time. 
 const int sampling_rate = interval_time / array_size;//After a reward, strain gauge voltages will be read during the interval at the sampleing rate determined by "array_size". 
+const int punish_duration = 5000; //How long the monk won't get any water after a certain time. 
 
 //Motion detection parametner
-const float Sensitivity = 0.005; //Lower value for higher sensitivigty. 
-const int reward_repeat_time = 10; //Get more reward if needed. 
+const float Sensitivity = 0.005;  //Lower value for higher sensitivigty. The resolution of Arduino analog input for 5V supply is ~0.005V. 
+const int reward_repeat_time = 20; //Get more reward if needed. 
 
 int reward_flag = 1;
 float cur_voltage;
@@ -59,8 +60,9 @@ void loop() {
     give_reward(reward_repeat_time);
   } else {
     give_reward(0);
+    delay(punish_duration);
   }
-  reward_flag = 0;
+  reward_flag = 1;
 
   Serial.println("---------Session END----------");
   //digitalWrite(2, LOW);
@@ -92,9 +94,9 @@ void give_reward(int repeat_time){
   //0 means no reward
   for (int i=1;i<=repeat_time;i++){
     digitalWrite(2, HIGH);
-    delay(10);
+    delay(60);
     digitalWrite(2, LOW);
-    delay(10);
+    delay(60);
   }
 }
 
