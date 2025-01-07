@@ -6,6 +6,14 @@ Exp: Get strain gauge measurement in an array to calculate running average. When
 reward won't be given for the current session. 
 Running average sampling rate and motion detection sampling will be similar
 Note that one measurement loop takes 20ms, rewrad taks reward_time*10ms (default 100ms). Motion during this time won't be considered regardless of interval_time. 
+
+Encoding for real_time data processing: 
+0: Init. 
+1: Flag is turned to 0, motion is detected. 
+2: End of a session. 
+What you see on the monitor: 0-Init; 1-motion detected; 2-session END. 
+Init is given at start of loop so that the console now the starting point. 
+What you see in real-time data processing: Succeed session: 50/52, sitting still rate: 96%. 
 */
 
 #define DIN A0
@@ -15,11 +23,11 @@ Note that one measurement loop takes 20ms, rewrad taks reward_time*10ms (default
 const int interval_time = 1000; //There is no actual idel interval time in this experiment. 
 const int array_size = 20; //Define the size of running average array. Longer array means more sampling during the interval time. 
 const int sampling_rate = interval_time / array_size;//After a reward, strain gauge voltages will be read during the interval at the sampleing rate determined by "array_size". 
-const int punish_duration = 5000; //How long the monk won't get any water after a certain time. 
+const int punish_duration = 3000; //How long the monk won't get any water after a certain time. 
 
 //Motion detection parametner
 const float Sensitivity = 0.005;  //Lower value for higher sensitivigty. The resolution of Arduino analog input for 5V supply is ~0.005V. 
-const int reward_repeat_time = 20; //Get more reward if needed. 
+const int reward_repeat_time = 15; //Get more reward if needed. 
 
 int reward_flag = 1;
 float cur_voltage;
@@ -37,7 +45,7 @@ void setup() {
     //Running average init. 
     insert_running_average();
   }
-  Serial.println("Init done! ");
+  Serial.println("0-Init done! ");
 }
 
 void loop() {
@@ -46,25 +54,28 @@ void loop() {
   update_running_ave(); //update running_ave. 
   for (int i = 1;i<=(int)sampling_rate;i++){
     if (abs(running_ave - cur_voltage) >= Sensitivity){
-    Serial.println("Motion detected! ");
     reward_flag = 0;
     }
     insert_running_average(); 
     update_running_ave();
-    //Serial.print("cur_voltage:");
-    //Serial.println(cur_voltage);
-    //Serial.print("running_average_voltage:");
-    //Serial.println(running_ave);
+    
   }
+  Serial.print("cur_voltage:");
+  Serial.println(cur_voltage);
+  Serial.print("running_average_voltage:");
+  Serial.println(running_ave);
   if (reward_flag == 1){
+    Serial.println("1-Giving reward! ");
     give_reward(reward_repeat_time);
+    
   } else {
+    Serial.println("2-Motion detected! ");
     give_reward(0);
     delay(punish_duration);
   }
   reward_flag = 1;
 
-  Serial.println("---------Session END----------");
+  //Serial.println("3-Session END---------------------");
   //digitalWrite(2, LOW);
 }
 
@@ -72,10 +83,10 @@ void loop() {
 //Utility functions: 
 float get_strain_voltage() {
   int a1=0; 
-  for (int i = 1; i <= 10; i++) {
-    a1 += analogRead(A0); delay (2);
+  for (int i = 1; i <= 30; i++) {
+    a1 += analogRead(A0); delay (1);
   }
-  int analogValue = a1/10;
+  int analogValue = a1/30;
   //int analogValue = analogRead(A0);
   
   float voltage = analogValue * (4.8 / 1023.0);  // Convert to voltage (assuming 5V reference)
@@ -92,6 +103,7 @@ float set_zero() {
 
 void give_reward(int repeat_time){
   //0 means no reward
+  delay(60);
   for (int i=1;i<=repeat_time;i++){
     digitalWrite(2, HIGH);
     delay(60);
