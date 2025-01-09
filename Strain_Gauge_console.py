@@ -32,8 +32,12 @@ try:
                 line = ser.readline().decode('utf-8').strip()
                 print(f"Received: {line}\n")
                 line = line.split('-')
+                line2 = line[1]
                 line = int(line[0])
                 total_session_num += 1
+                if line == 3:
+                    print(line2)
+                    continue
                 if line == 2:
                     total_sit_fail_num += 1
                 success_rate = (total_session_num-total_sit_fail_num)/total_session_num
