@@ -11,7 +11,7 @@ Encoding for real_time data processing:
 0: Init. 
 1: Flag is turned to 0, motion is detected. 
 2: End of a session. 
-What you see on the monitor: 0-Init; 1-motion detected; 2-session END. 
+What you see on the monitor: 0-Init; 1-giving reward; 2-motion detected; 3-analog reading. 
 Init is given at start of loop so that the console now the starting point. 
 What you see in real-time data processing: Succeed session: 50/52, sitting still rate: 96%. 
 */
@@ -20,14 +20,14 @@ What you see in real-time data processing: Succeed session: 50/52, sitting still
 #define DOUT 2
 
 //sampling parameter: 
-const int interval_time = 1000; //There is no actual idel interval time in this experiment. 
+const int interval_time = 500; //There is no actual idel interval time in this experiment. 
 const int array_size = 20; //Define the size of running average array. Longer array means more sampling during the interval time. 
 const int sampling_rate = interval_time / array_size;//After a reward, strain gauge voltages will be read during the interval at the sampleing rate determined by "array_size". 
-const int punish_duration = 3000; //How long the monk won't get any water after a certain time. 
+const int punish_duration = 100; //How long the monk won't get any water after a certain time. 
 
 //Motion detection parametner
 const float Sensitivity = 0.005;  //Lower value for higher sensitivigty. The resolution of Arduino analog input for 5V supply is ~0.005V. 
-const int reward_repeat_time = 15; //Get more reward if needed. 
+const int reward_repeat_time = 2; //Get more reward if needed. 
 
 int reward_flag = 1;
 float cur_voltage;
@@ -60,9 +60,9 @@ void loop() {
     update_running_ave();
     
   }
-  Serial.print("cur_voltage:");
+  Serial.print("3-cur_voltage: ");
   Serial.println(cur_voltage);
-  Serial.print("running_average_voltage:");
+  Serial.print("3-running_average_voltage: ");
   Serial.println(running_ave);
   if (reward_flag == 1){
     Serial.println("1-Giving reward! ");
