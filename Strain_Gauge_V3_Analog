@@ -9,11 +9,12 @@ Note that one measurement loop takes 20ms, rewrad taks reward_time*10ms (default
 
 Encoding for real_time data processing: 
 0: Init. 
-1: Flag is turned to 0, motion is detected. 
-2: End of a session. 
-What you see on the monitor: 0-Init; 1-giving reward; 2-motion detected; 3-analog reading. 
+1: Session start
+2: Motion detected. 
+3: Reward given. 
+4: Session end. 
 Init is given at start of loop so that the console now the starting point. 
-What you see in real-time data processing: Succeed session: 50/52, sitting still rate: 96%. 
+What you see in real-time data processing: Succeed session: 50/52, sitting still rate: 96.XXXXX%. 
 */
 
 #define DIN A0
@@ -50,32 +51,31 @@ void setup() {
 
 void loop() {
   //give_reward(10);
-  insert_running_average(); //update the array and cur_voltage. 
-  update_running_ave(); //update running_ave. 
+  Serial.println("1-Session Start");
+  
   for (int i = 1;i<=(int)sampling_rate;i++){
+    insert_running_average(); //update the array and cur_voltage. 
+    update_running_ave(); //update running_ave. 
     if (abs(running_ave - cur_voltage) >= Sensitivity){
-    reward_flag = 0;
+      reward_flag = 0;
+      Serial.println("2-Motion_detected");
     }
-    insert_running_average(); 
-    update_running_ave();
-    
   }
-  Serial.print("3-cur_voltage: ");
-  Serial.println(cur_voltage);
-  Serial.print("3-running_average_voltage: ");
-  Serial.println(running_ave);
+  //Serial.print("Cur_voltage: ");
+  //Serial.println(cur_voltage);
+  //Serial.print("Running_average_voltage: ");
+  //Serial.println(running_ave);
   if (reward_flag == 1){
-    Serial.println("1-Giving reward! ");
+    Serial.println("3-Giving reward! ");
     give_reward(reward_repeat_time);
     
   } else {
-    Serial.println("2-Motion detected! ");
     give_reward(0);
     delay(punish_duration);
   }
   reward_flag = 1;
-
-  //Serial.println("3-Session END---------------------");
+  
+  Serial.println("4-Session END---------------------");
   //digitalWrite(2, LOW);
 }
 
