@@ -8,7 +8,7 @@ Exp: Get Serial.print output from Arduino (StrainGauge_V3_Analog.ino).
 
 import serial
 import time
-import py_monitor_signal
+from py_monitor_signal import show_on_second_monitor
 import pygame
 
 if __name__ == "__main__":
@@ -25,6 +25,9 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, display=1)
     green_color = (0, 255, 0)
     red_color = (255,0,0)
+    #Show green color by default:
+    screen.fill(green_color)
+    pygame.display.flip()
 
     try:
         # Open the serial connection
@@ -32,28 +35,43 @@ if __name__ == "__main__":
             file.write(f"Experiment start. \n")
         with serial.Serial(serial_port, baud_rate, timeout=10) as ser:
             print(f"Listening on {serial_port} at {baud_rate} baud.")
-            
+            Session_conclude_flag = 0
             # Open the file for recording
             while 1:
                 # Read a line from the serial port
                 if ser.in_waiting > 0:
                     line = ser.readline().decode('utf-8').strip()
-                    print(f"Received: {line}\n")
-                    line = line.split('-')
-                    line2 = line[1]
-                    line = int(line[0])
                     
-                    if line == 1:
-                        show_on_second_monitor(screen,red_color)
-                    if line == 3:
-                        print(line2)
+                    line = line.split('-')
+                    #Check for incorrect message encoding: 
+                    try:
+                        line0 = int(line[0])
+                    except:
+                        print("Caught message in the middle of Arduino processing, waiting to reboot.")
                         continue
-                    if line == 2:
-                        total_sit_fail_num += 1
-                        show_on_second_monitor(screen,green_color)
-                    total_session_num += 1
-                    success_rate = (total_session_num-total_sit_fail_num)/total_session_num
-                    print(f"Current sitting still: {total_session_num-total_sit_fail_num} / {total_session_num}, success rate: {success_rate}\n")
+                    line2 = line[1]
+                    if line0 == 1:
+                        total_session_num += 1
+                    if line0 == 2:
+                        if Session_conclude_flag == 1:
+                            continue
+                        else:
+                            Session_conclude_flag = 1
+                            print(f"Received: {line}\n")
+                            total_sit_fail_num += 1
+                            show_on_second_monitor(screen,red_color,1)
+                    if line0 == 3:
+                        if Session_conclude_flag == 1:
+                            continue
+                        else:
+                            Session_conclude_flag = 1
+                            show_on_second_monitor(screen,green_color,0.001)
+                            print(f"Received: {line}\n")
+                            continue
+                    if line0 == 4:
+                        Session_conclude_flag = 0
+                        success_rate = (total_session_num-total_sit_fail_num)/total_session_num
+                        print(f"Current sitting still: {total_session_num-total_sit_fail_num} / {total_session_num}, success rate: {success_rate}\n")
     except serial.SerialException as e:
         print(f"Error: {e}\n")
         with open(output_file, 'a') as file:
