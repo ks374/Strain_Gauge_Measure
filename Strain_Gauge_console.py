@@ -42,7 +42,7 @@ if __name__ == "__main__":
                     line = line.split('-')
                     line2 = line[1]
                     line = int(line[0])
-                    total_session_num += 1
+                    
                     if line == 1:
                         show_on_second_monitor(screen,red_color)
                     if line == 3:
@@ -51,6 +51,7 @@ if __name__ == "__main__":
                     if line == 2:
                         total_sit_fail_num += 1
                         show_on_second_monitor(screen,green_color)
+                    total_session_num += 1
                     success_rate = (total_session_num-total_sit_fail_num)/total_session_num
                     print(f"Current sitting still: {total_session_num-total_sit_fail_num} / {total_session_num}, success rate: {success_rate}\n")
     except serial.SerialException as e:
