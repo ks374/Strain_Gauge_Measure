@@ -1,0 +1,62 @@
+Experiment start. 
+Sitting still: 0 / 0, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 0 / 0, success rate: 0
+Experiment incomplete, Error: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+Sitting still: 0 / 0, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 0 / 0, success rate: 0
+Experiment incomplete, Error: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+Sitting still: 0 / 0, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 1 / 1, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 1 / 1, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 0 / 0, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 0 / 0, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 2 / 2, success rate: 0
+Experiment end. 
+Experiment start. 
+Experiment start. 
+Experiment start. 
+Experiment start. 
+Sitting still: 267 / 397, success rate: 0.6742424242424242
+Experiment incomplete, User interruped
+Sitting still: 267 / 397, success rate: 0.6742424242424242
+Experiment end. 
+Experiment start. 
+Sitting still: 1 / 1, success rate: 0
+Experiment incomplete, Error: Cannot configure port, something went wrong. Original message: PermissionError(13, 'A device attached to the system is not functioning.', None, 31)
+Sitting still: 1 / 1, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 1 / 1, success rate: 0
+Experiment incomplete, Error: Cannot configure port, something went wrong. Original message: PermissionError(13, 'A device attached to the system is not functioning.', None, 31)
+Sitting still: 1 / 1, success rate: 0
+Experiment end. 
+Experiment start. 
+Experiment start. 
+Sitting still: 1 / 1, success rate: 0
+Experiment incomplete, Error: could not open port 'COM3': PermissionError(13, 'Access is denied.', None, 5)
+Sitting still: 1 / 1, success rate: 0
+Experiment end. 
+Experiment start. 
+Experiment start. 
+Experiment start. 
+Experiment start. 
+Experiment start. 
+Experiment start. 
+Sitting still: 50 / 64, success rate: 0.7936507936507936
+Experiment incomplete, Error: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+Sitting still: 50 / 64, success rate: 0.7936507936507936
+Experiment end. 

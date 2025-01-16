@@ -13,22 +13,22 @@ import pygame
 
 if __name__ == "__main__":
     # Set up the serial port
-    global screen_width,screen_height,circle_radius,circle_color
+    global screen_width,screen_height,circle_radius,circle_color,gray_color
     
-    serial_port = 'COM7'  # Update with your serial port (e.g., COM3 for Windows)
+    serial_port = 'COM3'  # Update with your serial port (e.g., COM3 for Windows)
     baud_rate = 9600             # Match this with the Arduino's baud rate
     output_file = 'arduino_output.txt'
 
-    total_session_num = 0
+    total_session_num = 1
     total_sit_fail_num = 0
     success_rate = 0
     
     screen_width, screen_height = 1024, 768
-    circle_color = (255, 255, 255)
+    circle_color = (128,128,128)
     circle_radius = 50
 
     pygame.init()
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screen = pygame.display.set_mode((screen_width, screen_height),pygame.RESIZABLE)
     green_color = (80, 255, 80)
     gray_color = (128,128,128)
     red_color = (255,80,80)
@@ -73,7 +73,7 @@ if __name__ == "__main__":
                             continue
                         else:
                             Session_conclude_flag = 1
-                            show_on_second_monitor(screen,green_color,0.001)
+                            show_on_second_monitor(screen,green_color,1)
                             print(f"Received: {line}\n")
                             continue
                     if line0 == 4:
