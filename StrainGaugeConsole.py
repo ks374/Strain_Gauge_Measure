@@ -13,6 +13,8 @@ import pygame
 
 if __name__ == "__main__":
     # Set up the serial port
+    global screen_width,screen_height,circle_radius,circle_color
+    
     serial_port = 'COM7'  # Update with your serial port (e.g., COM3 for Windows)
     baud_rate = 9600             # Match this with the Arduino's baud rate
     output_file = 'arduino_output.txt'
@@ -20,13 +22,19 @@ if __name__ == "__main__":
     total_session_num = 0
     total_sit_fail_num = 0
     success_rate = 0
+    
+    screen_width, screen_height = 1024, 768
+    circle_color = (255, 255, 255)
+    circle_radius = 50
 
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((screen_width, screen_height))
     green_color = (80, 255, 80)
+    gray_color = (128,128,128)
     red_color = (255,80,80)
     #Show green color by default:
-    screen.fill(green_color)
+    screen.fill(gray_color)
+    pygame.draw.circle(screen,circle_color,(screen_width//2,screen_height//2),circle_radius)
     pygame.display.flip()
 
     try:
