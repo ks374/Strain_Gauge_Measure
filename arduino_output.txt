@@ -60,3 +60,19 @@ Sitting still: 50 / 64, success rate: 0.7936507936507936
 Experiment incomplete, Error: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
 Sitting still: 50 / 64, success rate: 0.7936507936507936
 Experiment end. 
+Experiment start. 
+Sitting still: 1 / 1, success rate: 0
+Experiment incomplete, Error: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+Sitting still: 1 / 1, success rate: 0
+Experiment end. 
+Experiment start. 
+Experiment start. 
+Sitting still: 706 / 1144, success rate: 0.6171328671328671
+Experiment incomplete, User interruped
+Sitting still: 706 / 1144, success rate: 0.6171328671328671
+Experiment end. 
+Experiment start. 
+Sitting still: 586 / 939, success rate: 0.6236673773987207
+Experiment incomplete, Error: ClearCommError failed (OSError(22, 'The I/O operation has been aborted because of either a thread exit or an application request.', None, 995))
+Sitting still: 586 / 939, success rate: 0.6236673773987207
+Experiment end. 
