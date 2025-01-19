@@ -73,7 +73,7 @@ if __name__ == "__main__":
                             continue
                         else:
                             Session_conclude_flag = 1
-                            show_on_second_monitor(screen,green_color,1)
+                            show_on_second_monitor(screen,gray_color,1)
                             print(f"Received: {line}\n")
                             continue
                     if line0 == 4:
