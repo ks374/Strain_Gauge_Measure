@@ -76,3 +76,29 @@ Sitting still: 586 / 939, success rate: 0.6236673773987207
 Experiment incomplete, Error: ClearCommError failed (OSError(22, 'The I/O operation has been aborted because of either a thread exit or an application request.', None, 995))
 Sitting still: 586 / 939, success rate: 0.6236673773987207
 Experiment end. 
+Experiment start. 
+Sitting still: 109 / 140, success rate: 0.7769784172661871
+Experiment incomplete, User interruped
+Sitting still: 109 / 140, success rate: 0.7769784172661871
+Experiment end. 
+Experiment start. 
+Sitting still: 1 / 1, success rate: 0
+Experiment incomplete, Error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+Sitting still: 1 / 1, success rate: 0
+Experiment end. 
+Experiment start. 
+Sitting still: 741 / 1365, success rate: 0.5425219941348973
+Experiment incomplete, User interruped
+Sitting still: 741 / 1365, success rate: 0.5425219941348973
+Experiment end. 
+Experiment start. 
+Sitting still: 118 / 141, success rate: 0.8357142857142857
+Experiment incomplete, User interruped
+Sitting still: 118 / 141, success rate: 0.8357142857142857
+Experiment end. 
+Experiment start. 
+Experiment start. 
+Sitting still: 435 / 497, success rate: 0.875
+Experiment incomplete, User interruped
+Sitting still: 435 / 497, success rate: 0.875
+Experiment end. 

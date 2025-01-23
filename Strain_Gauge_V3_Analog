@@ -21,13 +21,13 @@ What you see in real-time data processing: Succeed session: 50/52, sitting still
 #define DOUT 2
 
 //sampling parameter: 
-const int interval_time = 750; //There is no actual idel interval time in this experiment. 
+const int interval_time = 500; //There is no actual idel interval time in this experiment. 
 const int array_size = 20; //Define the size of running average array. Longer array means more sampling during the interval time. 
 const int sampling_rate = interval_time / array_size;//After a reward, strain gauge voltages will be read during the interval at the sampleing rate determined by "array_size". 
 const int punish_duration = 100; //How long the monk won't get any water after a certain time. 
 
 //Motion detection parametner
-const float Sensitivity = 0.005;  //Lower value for higher sensitivigty. The resolution of Arduino analog input for 5V supply is ~0.005V. 
+const float Sensitivity = 0.01;  //Lower value for higher sensitivigty. The resolution of Arduino analog input for 5V supply is ~0.005V. 
 const int reward_repeat_time = 10; //Get more reward if needed. 
 
 int reward_flag = 1;
@@ -61,8 +61,8 @@ void loop() {
       Serial.println("2-Motion_detected");
     }
   }
-  //Serial.print("Cur_voltage: ");
- // Serial.println(cur_voltage);
+  Serial.print("Cur_voltage: ");
+  Serial.println(cur_voltage);
   //Serial.print("Running_average_voltage: ");
   //Serial.println(running_ave);
   if (reward_flag == 1){

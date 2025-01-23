@@ -11,13 +11,25 @@ import time
 from py_monitor_signal import show_on_second_monitor
 import pygame
 
+def get_reading_number(line,outfile):
+    line_temp = line.split(':')
+    if line_temp[0] == "Cur_voltage"
+        value = line_temp[1].strip()
+        write_number(outfile,value)
+
+def write_number(outfile,value):
+     with open(outfile, 'a') as file:
+            file.write(f"{value}\n")
+
 if __name__ == "__main__":
     # Set up the serial port
     global screen_width,screen_height,circle_radius,circle_color,gray_color
     
     serial_port = 'COM7'  # Update with your serial port (e.g., COM3 for Windows)
     baud_rate = 9600             # Match this with the Arduino's baud rate
-    output_file = 'arduino_output.txt'
+    output_file = 'arduino_output_20250123.txt'
+
+    Number_reading_Mode = 1
 
     total_session_num = 1
     total_sit_fail_num = 0
@@ -49,7 +61,10 @@ if __name__ == "__main__":
                 # Read a line from the serial port
                 if ser.in_waiting > 0:
                     line = ser.readline().decode('utf-8').strip()
-                    
+
+                    if Number_reading_Mode == 1:
+                        get_reading_number(line,output_file)
+                        
                     line = line.split('-')
                     #Check for incorrect message encoding: 
                     try:
