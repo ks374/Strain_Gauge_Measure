@@ -13,7 +13,7 @@ import pygame
 
 def get_reading_number(line,outfile):
     line_temp = line.split(':')
-    if line_temp[0] == "Cur_voltage"
+    if line_temp[0] == "Cur_voltage":
         value = line_temp[1].strip()
         write_number(outfile,value)
 

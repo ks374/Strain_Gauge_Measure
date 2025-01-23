@@ -67,11 +67,11 @@ void loop() {
   //Serial.println(running_ave);
   if (reward_flag == 1){
     Serial.println("3-Giving reward! ");
-    give_reward(reward_repeat_time);
+    //give_reward(reward_repeat_time);
     
   } else {
     give_reward(0);
-    delay(punish_duration);
+    //delay(punish_duration);
   }
   reward_flag = 1;
   
@@ -82,14 +82,14 @@ void loop() {
 //--------------------------------------------------------------------------------------------------------------
 //Utility functions: 
 float get_strain_voltage() {
-  int a1=0; 
+  float a1=0; 
   for (int i = 1; i <= 30; i++) {
     a1 += analogRead(A0); delay (1);
   }
-  int analogValue = a1/30;
+  float analogValue = a1/30.00000;
   //int analogValue = analogRead(A0);
   
-  float voltage = analogValue * (4.8 / 1023.0);  // Convert to voltage (assuming 5V reference)
+  float voltage = analogValue * (4.800000 / 1023.0000000);  // Convert to voltage (assuming 5V reference)
   return voltage;
 }
 
