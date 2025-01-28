@@ -11,15 +11,25 @@ import time
 from py_monitor_signal import show_on_second_monitor
 import pygame
 
-def get_reading_number(line,outfile):
+def get_cur_timing(line):
+	line_temp = line.split(':')
+	if line_temp[0] == "Time elapsed":
+		value = line_temp[1].strip()
+		return value
+	else:
+		return 0
+	
+def get_reading_number(line):
     line_temp = line.split(':')
     if line_temp[0] == "Cur_voltage":
         value = line_temp[1].strip()
-        write_number(outfile,value)
+        return value
+	else:
+		return 0
 
-def write_number(outfile,value):
+def write_number(outfile,time,voltage):
      with open(outfile, 'a') as file:
-            file.write(f"{value}\n")
+            file.write(f"{time},{voltage},\n")
 
 if __name__ == "__main__":
     # Set up the serial port
@@ -63,14 +73,17 @@ if __name__ == "__main__":
                     line = ser.readline().decode('utf-8').strip()
 
                     if Number_reading_Mode == 1:
-                        get_reading_number(line,output_file)
+                        cur_time = get_cur_timing(line)
+						cur_voltage = get_reading_number(line,output_file)
+						if cur_voltage != 0:
+							write_number(outfile,cur_time,cur_voltage)
                         
                     line = line.split('-')
                     #Check for incorrect message encoding: 
                     try:
                         line0 = int(line[0])
                     except:
-                        print("Caught message in the middle of Arduino processing, waiting to reboot.")
+                        print("Caught voltage writing, write and reboot.")
                         continue
                     line2 = line[1]
                     if line0 == 1:
