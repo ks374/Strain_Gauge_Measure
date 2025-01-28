@@ -24,11 +24,11 @@ What you see in real-time data processing: Succeed session: 50/52, sitting still
 const int interval_time = 500; //There is no actual idel interval time in this experiment. 
 const int array_size = 20; //Define the size of running average array. Longer array means more sampling during the interval time. 
 const int sampling_rate = interval_time / array_size;//After a reward, strain gauge voltages will be read during the interval at the sampleing rate determined by "array_size". 
-const int punish_duration = 100; //How long the monk won't get any water after a certain time. 
+const int punish_duration = 500; //How long the monk won't get any water after a certain time. 
 
 //Motion detection parametner
 const float Sensitivity = 0.008;  //Lower value for higher sensitivigty. The resolution of Arduino analog input for 5V supply is ~0.005V. 
-const int reward_repeat_time = 10; //Get more reward if needed. 
+const int reward_repeat_time = 15; //Get more reward if needed. 
 
 int reward_flag = 1;
 float cur_voltage;
@@ -36,9 +36,13 @@ float running_measure[array_size];
 int running_measure_pointer = 1;
 float running_ave = 0;
 
+unsigned long startTime;  // Variable to store the start time
+unsigned long currentTime;  // Variable to store the current time
+
 void setup() {
   //alogReference(INTERNAL);
   Serial.begin(9600);  // Start the serial communication at 9600 baud rate
+  startTime = millis();  // Record the start time
   pinMode(DIN, INPUT); //set A0 as input pin
   pinMode(DOUT, OUTPUT); 
 
@@ -115,6 +119,9 @@ void give_reward(int repeat_time){
 void insert_running_average(){
   //return current measurement of the voltage
   cur_voltage = get_strain_voltage();
+  currentTime = millis();  // Get the current time
+  Serial.print("Time elapsed: ");
+  Serial.println(currentTime - startTime);  // Convert milliseconds to seconds
   Serial.print("Cur_voltage: ");
   Serial.println(cur_voltage,5);
   running_measure[running_measure_pointer] = cur_voltage;
