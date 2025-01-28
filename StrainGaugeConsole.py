@@ -82,13 +82,13 @@ if __name__ == "__main__":
                             Session_conclude_flag = 1
                             print(f"Received: {line}\n")
                             total_sit_fail_num += 1
-                            show_on_second_monitor(screen,red_color,1)
+                            show_on_second_monitor(screen,red_color,1.5)
                     if line0 == 3:
                         if Session_conclude_flag == 1:
                             continue
                         else:
                             Session_conclude_flag = 1
-                            show_on_second_monitor(screen,gray_color,1)
+                            show_on_second_monitor(screen,gray_color,1.5)
                             print(f"Received: {line}\n")
                             continue
                     if line0 == 4:
