@@ -11,13 +11,13 @@ import time
 from py_monitor_signal import show_on_second_monitor
 import pygame
 
-def get_cur_timing(line):
-	line_temp = line.split(':')
-	if line_temp[0] == "Time elapsed":
-		value = line_temp[1].strip()
-		return value
-	else:
-		return 0
+def get_cur_timing(line,val):
+    line_temp = line.split(':')
+    if line_temp[0] == "Time elapsed":
+        value = line_temp[1].strip()
+        return value
+    else:
+        return val
 	
 def get_reading_number(line):
     line_temp = line.split(':')
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     
     serial_port = 'COM7'  # Update with your serial port (e.g., COM3 for Windows)
     baud_rate = 9600             # Match this with the Arduino's baud rate
-    output_file = 'arduino_output_20250129_EmptyChairRecording.txt'
+    output_file = 'arduino_output_20250129_EmptyChairRecording_1.txt'
 
     Number_reading_Mode = 1
 
@@ -47,7 +47,9 @@ if __name__ == "__main__":
     
     screen_width, screen_height = 1024, 768
     circle_color = (128,128,128)
-    circle_radius = 50
+    circle_radius = 20
+
+    cur_time = 0
 
     pygame.init()
     screen = pygame.display.set_mode((screen_width, screen_height),pygame.RESIZABLE)
@@ -73,7 +75,7 @@ if __name__ == "__main__":
                     line = ser.readline().decode('utf-8').strip()
 
                     if Number_reading_Mode == 1:
-                        cur_time = get_cur_timing(line)
+                        cur_time = get_cur_timing(line,cur_time)
                         cur_voltage = get_reading_number(line)
                         if cur_voltage != 0:
                             write_number(output_file,cur_time,cur_voltage)
