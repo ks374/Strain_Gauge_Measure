@@ -24,8 +24,8 @@ def get_reading_number(line):
     if line_temp[0] == "Cur_voltage":
         value = line_temp[1].strip()
         return value
-	else:
-		return 0
+    else:
+        return 0
 
 def write_number(outfile,time,voltage):
      with open(outfile, 'a') as file:
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     
     serial_port = 'COM7'  # Update with your serial port (e.g., COM3 for Windows)
     baud_rate = 9600             # Match this with the Arduino's baud rate
-    output_file = 'arduino_output_20250123.txt'
+    output_file = 'arduino_output_20250129_EmptyChairRecording.txt'
 
     Number_reading_Mode = 1
 
@@ -74,9 +74,9 @@ if __name__ == "__main__":
 
                     if Number_reading_Mode == 1:
                         cur_time = get_cur_timing(line)
-						cur_voltage = get_reading_number(line,output_file)
-						if cur_voltage != 0:
-							write_number(outfile,cur_time,cur_voltage)
+                        cur_voltage = get_reading_number(line)
+                        if cur_voltage != 0:
+                            write_number(output_file,cur_time,cur_voltage)
                         
                     line = line.split('-')
                     #Check for incorrect message encoding: 
