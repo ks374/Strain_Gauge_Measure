@@ -37,7 +37,7 @@ if __name__ == "__main__":
     
     serial_port = 'COM7'  # Update with your serial port (e.g., COM3 for Windows)
     baud_rate = 9600             # Match this with the Arduino's baud rate
-    output_file = 'arduino_output_20250129_EmptyChairRecording_1.txt'
+    output_file = 'arduino_output_20250129_EmptyChairRecording_3.txt'
 
     Number_reading_Mode = 1
 
