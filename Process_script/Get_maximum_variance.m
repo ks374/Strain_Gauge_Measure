@@ -8,7 +8,7 @@ directory = 'D:\Research\Projects\Project_31_Postdoc_Start\StrainGauge\Strain_Ga
 out_directory = [directory 'Result_figure\'];
 %%
 %Read the data manually to "good"
-filename = [directory 'arduino_output_20250129_EmptyChairRecording_3.txt'];
+filename = [directory 'Data\arduino_output_20250128_longsession_good_90per.txt'];
 fileID = fopen(filename, 'r');
 
 % Read all lines into a cell array
@@ -39,7 +39,7 @@ Result(:,1) = Result(:,1)/1000;
 Result_size = size(Result,1);
 X_time = Result(:,1);
 f = figure;plot(X_time,Result(:,2));title('raw');
-saveas(f, [directory,'Result_figure\20250109\3_raw.png']);
+saveas(f, [directory,'Result_figure\20250128\Raw.png']);
 close(f);
 %
 %Check reading-to-reading voltage diff: 
@@ -50,7 +50,7 @@ end
 f = figure;
 subplot(1,2,1);plot(diff);
 subplot(1,2,2);histogram(diff,20);title('read-to-read');
-saveas(f, [directory,'Result_figure\20250109\3_read_to_read.png']);
+saveas(f, [directory,'Result_figure\20250128\Read_to_read.png']);
 close(f);
 %
 %Check within interval maximum voltage diff: 
@@ -63,7 +63,7 @@ end
 f = figure;
 subplot(1,2,1);plot(diff);
 subplot(1,2,2);histogram(diff,20);title('running average');
-saveas(f, [directory,'Result_figure\20250109\3_running_average.png']);
+saveas(f, [directory,'Result_figure\20250128\Running_average.png']);
 close(f);
 %%
 fclose('all');
